@@ -1,11 +1,13 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+
 import 'package:mantact/app/utils/constants/app_colors.dart';
-import 'package:mantact/app/utils/helper/app_measurement_helper.dart';
 import 'package:mantact/features/contact_module/bloc/contact_bloc.dart';
 import 'package:mantact/features/contact_module/bloc/contact_events.dart';
 import 'package:mantact/features/contact_module/models/contact.dart';
@@ -93,31 +95,52 @@ class _ContactCardState extends State<ContactCard> {
                     Text(
                       widget.name,
                       overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                    Text(widget.cpNo)
+                    Text(
+                      widget.cpNo,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )
                   ],
                 ),
               ),
-              ElevatedButton(onPressed: () {}, child: const Text("Call"))
+              ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      await FlutterPhoneDirectCaller.callNumber(widget.cpNo);
+                    } catch (e) {
+                      log('Call Exception:  $e');
+                    }
+                  },
+                  child: const Text("Call"))
             ],
           ),
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text("Email:"),
-                Text(widget.email),
-                SizedBox(
-                  height: AppMeasurementHelper.calculateMeasurement(
-                      context, 0.01, 'height'),
-                ),
-                const Text("Address:"),
-                Text(widget.address),
-                SizedBox(
-                  height: AppMeasurementHelper.calculateMeasurement(
-                      context, 0.01, 'height'),
-                ),
-              ],
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Email:",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Text(widget.email),
+                  const Divider(),
+                  const Text(
+                    "Address:",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4.0),
+                  Text(widget.address),
+                ],
+              ),
             ),
           ],
         ),

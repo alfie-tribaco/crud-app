@@ -26,7 +26,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   onTap: () {
                     Navigator.pushNamed(context, '/settings');
                   },
-                  child: const Icon(Icons.menu)))
+                  child: Icon(
+                    Icons.menu,
+                    color: Theme.of(context).textTheme.bodyLarge!.color,
+                  )))
         ],
       ),
     );

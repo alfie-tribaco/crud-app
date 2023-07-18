@@ -26,9 +26,9 @@ class _ContactHeaderState extends State<ContactHeader> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Column(children: [
-        const Text(AppStrings.contactHeader),
-        SizedBox(
-          height: MediaQuery.of(context).size.height * 0.02,
+        Text(
+          AppStrings.contactHeader,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
         Container(
           padding: const EdgeInsets.all(15),
@@ -40,6 +40,11 @@ class _ContactHeaderState extends State<ContactHeader> {
             children: [
               CustomTextField(
                 textFieldController: nameController,
+                label: "Person Name",
+                isCellNoInput: false,
+                isEmailInput: false,
+                isNameInput: true,
+                charLimit: 50,
               ),
               SizedBox(
                 height: AppMeasurementHelper.calculateMeasurement(
@@ -54,6 +59,7 @@ class _ContactHeaderState extends State<ContactHeader> {
                       onPressed: () {
                         if (nameController.text != "") {
                           showDialog(
+                            barrierDismissible: false,
                             context: context,
                             builder: (context) {
                               return CreateContactDialog(

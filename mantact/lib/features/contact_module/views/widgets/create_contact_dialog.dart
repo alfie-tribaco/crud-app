@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mantact/app/utils/constants/app_colors.dart';
 import 'package:mantact/app/utils/helper/app_measurement_helper.dart';
 import 'package:mantact/app/utils/helper/image_picker_helper.dart';
 import 'package:mantact/app/utils/shared/widgets/custom_textfield.dart';
@@ -76,9 +77,22 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
                   height: 80,
                   width: 80,
                   child: CircleAvatar(
-                    radius: 50, // Adjust the radius as per your requirement
+                    backgroundColor: AppColors.primaryColor,
+                    radius: 50,
                     backgroundImage:
                         imagePath != null ? FileImage(File(imagePath!)) : null,
+                    child: imagePath == null
+                        ? Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.person,
+                              size: 50,
+                              color: Colors.white,
+                            ),
+                          )
+                        : null,
                   ))),
           SizedBox(
             height: AppMeasurementHelper.calculateMeasurement(
@@ -86,6 +100,11 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
           ),
           CustomTextField(
             textFieldController: numberController,
+            label: "Contact Number",
+            isCellNoInput: true,
+            isEmailInput: false,
+            isNameInput: false,
+            charLimit: 11,
           ),
           SizedBox(
             height: AppMeasurementHelper.calculateMeasurement(
@@ -93,6 +112,11 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
           ),
           CustomTextField(
             textFieldController: emailController,
+            label: "Email Address",
+            isCellNoInput: false,
+            isEmailInput: true,
+            isNameInput: false,
+            charLimit: 50,
           ),
           SizedBox(
             height: AppMeasurementHelper.calculateMeasurement(
@@ -100,6 +124,11 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
           ),
           CustomTextField(
             textFieldController: addressController,
+            label: "Home Address",
+            isCellNoInput: false,
+            isEmailInput: false,
+            isNameInput: false,
+            charLimit: 100,
           ),
           SizedBox(
             height: AppMeasurementHelper.calculateMeasurement(
@@ -118,8 +147,10 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
                     if (widget.isUpdating == false) {
                       if (addressController.text == "" ||
                           numberController.text == "" ||
-                          emailController.text == "") {
-                        Fluttertoast.showToast(msg: "Complete Fields");
+                          emailController.text == "" ||
+                          imagePath == null) {
+                        Fluttertoast.showToast(
+                            msg: "Please Complete Info and the picture");
                       } else {
                         context.read<ContactBloc>().add(ContactAdd(
                             contact: Contact(

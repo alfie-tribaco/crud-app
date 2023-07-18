@@ -19,23 +19,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           child: Column(
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Expanded(
-                    flex: 2,
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Icon(Icons.arrow_back)),
-                  ),
-                  const Expanded(child: Text("Settings ")),
-                  const Spacer(),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Theme.of(context).textTheme.bodyLarge!.color,
+                      )),
                 ],
+              ),
+              SizedBox(
+                height: AppMeasurementHelper.calculateMeasurement(
+                    context, 0.05, 'height'),
+              ),
+              Text(
+                "Settings ",
+                style: Theme.of(context).textTheme.titleSmall,
               ),
               SizedBox(
                 height: AppMeasurementHelper.calculateMeasurement(

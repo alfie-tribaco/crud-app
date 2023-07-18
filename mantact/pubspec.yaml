@@ -49,8 +49,27 @@ dependencies:
   permission_handler: ^10.4.3
   hive_generator: ^2.0.0
   image_picker: ^1.0.1
+  lottie: ^2.5.0
+  flutter_phone_direct_caller: ^2.1.1
+  bloc_test: ^9.1.3
 
-  
+flutter_native_splash:
+  android: true
+  image: assets/app_name.png
+  color: "#ffffff"
+
+  android_12:
+    image: assets/app_name.png
+    color: "#ffffff"
+    android: true
+    
+  web: false
+
+flutter_launcher_icons:
+  android: "app_logo"
+  image_path: "assets/app_logo.png"
+  min_sdk_android: 21
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

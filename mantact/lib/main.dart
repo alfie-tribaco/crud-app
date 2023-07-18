@@ -11,8 +11,6 @@ import 'package:mantact/features/settings_module/bloc/settings_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-//Initialization of LocalDatabase (Hive)
-
   final localDatabase = LocalDatabase();
   await localDatabase.openLocalDatabase();
 

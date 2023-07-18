@@ -15,6 +15,7 @@ class _ContactScreenState extends State<ContactScreen> {
   Widget build(BuildContext context) {
     return const SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(),
         body: Column(
           children: [
