@@ -17,6 +17,7 @@ class ImagePickerHelper {
         final savedImage = await image
             .copy('${appDir.path}/${pickedImage.path.split('/').last}');
         String imagePath = savedImage.path;
+        print(imagePath);
         return imagePath;
       } else {
         return null;

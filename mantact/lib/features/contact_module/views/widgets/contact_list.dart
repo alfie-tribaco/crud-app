@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mantact/app/utils/constants/app_colors.dart';
 import 'package:mantact/app/utils/shared/widgets/custom_empty_list.dart';
 import 'package:mantact/features/contact_module/bloc/contact_bloc.dart';
 import 'package:mantact/features/contact_module/bloc/contact_events.dart';
@@ -27,7 +26,7 @@ class _ContactListState extends State<ContactList> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(10),
-      color: AppColors.appPureWhite,
+      color: Theme.of(context).colorScheme.background,
       child: BlocConsumer<ContactBloc, ContactState>(
         listener: (context, state) {
           if (state is ContactStateDeleteSuccess) {
@@ -53,7 +52,6 @@ class _ContactListState extends State<ContactList> {
               return ListView.builder(
                 itemCount: listOfContacts.length,
                 itemBuilder: (context, index) {
-                  print("BRUH ${listOfContacts[index].id}");
                   return ContactCard(
                     id: listOfContacts[index].id,
                     name: listOfContacts[index].name,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mantact/app/utils/constants/app_colors.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mantact/app/utils/constants/app_strings.dart';
 import 'package:mantact/app/utils/helper/app_measurement_helper.dart';
 import 'package:mantact/app/utils/shared/widgets/custom_textfield.dart';
@@ -34,7 +34,7 @@ class _ContactHeaderState extends State<ContactHeader> {
           padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: AppColors.appPureWhite,
+            color: Theme.of(context).colorScheme.background,
           ),
           child: Column(
             children: [
@@ -52,17 +52,22 @@ class _ContactHeaderState extends State<ContactHeader> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5))),
                       onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return CreateContactDialog(
-                              isUpdating: false,
-                              name: nameController.text,
-                            );
-                          },
-                        ).whenComplete(() {
-                          nameController.clear();
-                        });
+                        if (nameController.text != "") {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CreateContactDialog(
+                                isUpdating: false,
+                                name: nameController.text,
+                              );
+                            },
+                          ).whenComplete(() {
+                            nameController.clear();
+                          });
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Please Put your friend's name first");
+                        }
                       },
                       child: const Text("Add Contact")))
             ],

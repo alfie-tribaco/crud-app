@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +43,6 @@ class _ContactCardState extends State<ContactCard> {
           SlidableAction(
             backgroundColor: AppColors.appRed,
             onPressed: (context) {
-              print("Final Test: ${widget.id}");
               context.read<ContactBloc>().add(ContactDelete(
                   contact: Contact(
                       id: widget.id,
@@ -77,11 +78,13 @@ class _ContactCardState extends State<ContactCard> {
         ]),
         child: ExpansionTile(
           key: contactTileKey,
-          leading: const CircleAvatar(),
+          leading: CircleAvatar(
+            backgroundImage: FileImage(File(widget.imagePath.toString())),
+          ),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Container(
+              SizedBox(
                 width: 140,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

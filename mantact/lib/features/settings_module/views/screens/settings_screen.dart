@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mantact/app/utils/helper/app_measurement_helper.dart';
+import 'package:mantact/features/settings_module/bloc/settings_bloc.dart';
+import 'package:mantact/features/settings_module/bloc/settings_events.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -16,7 +19,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
               Row(
@@ -28,7 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: Icon(Icons.arrow_back)),
+                        child: const Icon(Icons.arrow_back)),
                   ),
                   const Expanded(child: Text("Settings ")),
                   const Spacer(),
@@ -41,14 +44,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text("Night Mode: "),
-                  Switch(
-                      value: isDarkMode,
-                      onChanged: (value) {
-                        setState(() {
-                          isDarkMode = value;
-                        });
-                      }),
+                  const Text("Night Mode: "),
+                  BlocBuilder<SettingsBloc, bool>(
+                    builder: (context, state) {
+                      return Switch(
+                          value: state,
+                          onChanged: (value) {
+                            setState(() {
+                              context
+                                  .read<SettingsBloc>()
+                                  .add(SettingsToggleDarkMode());
+                            });
+                          });
+                    },
+                  ),
                 ],
               )
             ],

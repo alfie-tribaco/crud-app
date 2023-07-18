@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mantact/app/utils/constants/app_colors.dart';
 import 'package:mantact/app/utils/shared/widgets/custom_appbar.dart';
 import 'package:mantact/features/contact_module/views/widgets/contact_header.dart';
 import 'package:mantact/features/contact_module/views/widgets/contact_list.dart';
@@ -16,7 +15,6 @@ class _ContactScreenState extends State<ContactScreen> {
   Widget build(BuildContext context) {
     return const SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.appWhiteBackground,
         appBar: CustomAppBar(),
         body: Column(
           children: [

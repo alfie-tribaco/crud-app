@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -25,7 +27,7 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
   TextEditingController addressController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
-  String imagePath = 'default';
+  String? imagePath;
 
   @override
   void initState() {
@@ -46,6 +48,7 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
       numberController.text = widget.contact!.contactNumber;
       addressController.text = widget.contact!.address;
       emailController.text = widget.contact!.email;
+      imagePath = widget.contact!.imagePath;
     }
   }
 
@@ -63,10 +66,20 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
           ),
           GestureDetector(
               onTap: () {
-                ImagePickerHelper().pickImage();
+                ImagePickerHelper().pickImage().then((value) async {
+                  setState(() {
+                    imagePath = value;
+                  });
+                });
               },
-              child:
-                  const SizedBox(height: 80, width: 80, child: CircleAvatar())),
+              child: SizedBox(
+                  height: 80,
+                  width: 80,
+                  child: CircleAvatar(
+                    radius: 50, // Adjust the radius as per your requirement
+                    backgroundImage:
+                        imagePath != null ? FileImage(File(imagePath!)) : null,
+                  ))),
           SizedBox(
             height: AppMeasurementHelper.calculateMeasurement(
                 context, 0.02, 'height'),
@@ -114,7 +127,7 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
                                 address: addressController.text,
                                 contactNumber: numberController.text,
                                 email: emailController.text,
-                                imagePath: imagePath,
+                                imagePath: imagePath.toString(),
                                 name: widget.name)));
                         Navigator.pop(context);
                       }
@@ -130,7 +143,7 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
                                 address: addressController.text,
                                 contactNumber: numberController.text,
                                 email: emailController.text,
-                                imagePath: imagePath,
+                                imagePath: imagePath.toString(),
                                 name: widget.name)));
                         Navigator.pop(context);
                       }

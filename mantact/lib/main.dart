@@ -6,6 +6,7 @@ import 'package:mantact/app/config/theme/app_theme.dart';
 import 'package:mantact/app/services/local_database_service/local_database.dart';
 import 'package:mantact/app/utils/constants/app_strings.dart';
 import 'package:mantact/features/contact_module/views/screens/contact_screen.dart';
+import 'package:mantact/features/settings_module/bloc/settings_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,12 +25,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: AppProviders.appProviders,
-      child: MaterialApp(
-        onGenerateRoute: (settings) =>
-            AppRoutesGenerator.generateRoute(settings),
-        title: AppStrings.appTitle,
-        theme: AppTheme.appLightThemeData,
-        home: const ContactScreen(),
+      child: BlocBuilder<SettingsBloc, bool>(
+        builder: (context, isDarkMode) {
+          return MaterialApp(
+            onGenerateRoute: (settings) =>
+                AppRoutesGenerator.generateRoute(settings),
+            title: AppStrings.appTitle,
+            theme: isDarkMode
+                ? AppTheme.appDarkThemeData
+                : AppTheme.appLightThemeData,
+            home: const ContactScreen(),
+          );
+        },
       ),
     );
   }
