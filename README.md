@@ -33,4 +33,3 @@ Please note that this project was created specifically for a job interview appli
 - image_picker: Allows users to pick images from their device's gallery.
 - lottie: Renders Lottie animations in the app.
 - flutter_phone_direct_caller: Used to enable direct calling functionality.
-- mockito: A mock library for writing unit tests.
