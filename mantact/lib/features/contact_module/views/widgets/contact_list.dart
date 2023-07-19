@@ -63,7 +63,10 @@ class _ContactListState extends State<ContactList> {
                 },
               );
             }
-          } else if (state is ContactStateLoading) {
+          } else if (state is ContactStateLoading ||
+              state is ContactStateDeleting ||
+              state is ContactStateSaving ||
+              state is ContactStateUpdating) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ContactStateError) {
             return const Text("Something went Wrong");

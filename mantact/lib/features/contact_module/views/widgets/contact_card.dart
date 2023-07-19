@@ -45,14 +45,42 @@ class _ContactCardState extends State<ContactCard> {
           SlidableAction(
             backgroundColor: AppColors.appRed,
             onPressed: (context) {
-              context.read<ContactBloc>().add(ContactDelete(
-                  contact: Contact(
-                      id: widget.id,
-                      address: widget.address,
-                      contactNumber: widget.cpNo,
-                      email: widget.email,
-                      imagePath: widget.imagePath,
-                      name: widget.name)));
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("Are you sure?"),
+                    content: const Text(
+                        "This will delete the contact and you cannot bring it back anymore"),
+                    actions: [
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Cancel")),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.appRed,
+                          ),
+                          onPressed: () {
+                            context.read<ContactBloc>().add(ContactDelete(
+                                contact: Contact(
+                                    id: widget.id,
+                                    address: widget.address,
+                                    contactNumber: widget.cpNo,
+                                    email: widget.email,
+                                    imagePath: widget.imagePath,
+                                    name: widget.name)));
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            "Delete",
+                            style: TextStyle(color: AppColors.appPureWhite),
+                          )),
+                    ],
+                  );
+                },
+              );
             },
             label: "Delete",
           ),
