@@ -5,4 +5,10 @@ abstract class SettingsEvents extends Equatable {
   List<Object?> get props => [];
 }
 
-class SettingsToggleDarkMode extends SettingsEvents {}
+class SettingsToggleDarkMode extends SettingsEvents {
+  final bool? isDarkMode;
+
+  SettingsToggleDarkMode({this.isDarkMode});
+  @override
+  List<Object?> get props => [isDarkMode];
+}

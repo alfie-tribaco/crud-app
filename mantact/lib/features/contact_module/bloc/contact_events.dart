@@ -9,11 +9,17 @@ abstract class ContactEvent extends Equatable {
 final class ContactAdd extends ContactEvent {
   final Contact contact;
   ContactAdd({required this.contact});
+
+  @override
+  List<Object?> get props => [contact];
 }
 
 final class ContactDelete extends ContactEvent {
   final Contact contact;
   ContactDelete({required this.contact});
+
+  @override
+  List<Object?> get props => [contact];
 }
 
 final class ContactGetAll extends ContactEvent {}
@@ -21,4 +27,7 @@ final class ContactGetAll extends ContactEvent {}
 final class ContactUpdate extends ContactEvent {
   final Contact contact;
   ContactUpdate({required this.contact});
+
+  @override
+  List<Object?> get props => [contact];
 }

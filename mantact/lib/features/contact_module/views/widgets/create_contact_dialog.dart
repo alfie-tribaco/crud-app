@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mantact/app/utils/constants/app_colors.dart';
 import 'package:mantact/app/utils/helper/app_measurement_helper.dart';
 import 'package:mantact/app/utils/helper/image_picker_helper.dart';
+import 'package:mantact/app/utils/helper/validation_helper.dart';
 import 'package:mantact/app/utils/shared/widgets/custom_textfield.dart';
 import 'package:mantact/features/contact_module/bloc/contact_bloc.dart';
 import 'package:mantact/features/contact_module/bloc/contact_events.dart';
@@ -53,6 +54,55 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
     }
   }
 
+  bool isValidContactInfo() {
+    if (addressController.text.isEmpty ||
+        numberController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        imagePath == null) {
+      Fluttertoast.showToast(
+          msg: "Please complete all information and add a picture");
+      return false;
+    } else if (ValidationHelper().checkEmailIsValid(emailController.text)! ==
+        false) {
+      Fluttertoast.showToast(msg: "Please enter a valid email");
+      return false;
+    } else if (ValidationHelper()
+            .checkCellPhoneNumberIsValid(numberController.text)! ==
+        false) {
+      Fluttertoast.showToast(msg: "Please enter a valid cellphone number");
+      return false;
+    }
+    return true;
+  }
+
+  void addNewContact() {
+    context.read<ContactBloc>().add(ContactAdd(
+          contact: Contact(
+            id: UniqueKey().toString(),
+            address: addressController.text,
+            contactNumber: numberController.text,
+            email: emailController.text,
+            imagePath: imagePath.toString(),
+            name: widget.name,
+          ),
+        ));
+    Navigator.pop(context);
+  }
+
+  void updateContact() {
+    context.read<ContactBloc>().add(ContactUpdate(
+          contact: Contact(
+            id: widget.contact!.id,
+            address: addressController.text,
+            contactNumber: numberController.text,
+            email: emailController.text,
+            imagePath: imagePath.toString(),
+            name: widget.name,
+          ),
+        ));
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -60,7 +110,10 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
           child: Container(
         padding: const EdgeInsets.all(15),
         child: Column(children: [
-          Text(widget.name),
+          Text(
+            widget.name,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
           SizedBox(
             height: AppMeasurementHelper.calculateMeasurement(
                 context, 0.02, 'height'),
@@ -144,39 +197,11 @@ class _CreateContactDialogState extends State<CreateContactDialog> {
                   child: const Text("Cancel")),
               FilledButton(
                   onPressed: () {
-                    if (widget.isUpdating == false) {
-                      if (addressController.text == "" ||
-                          numberController.text == "" ||
-                          emailController.text == "" ||
-                          imagePath == null) {
-                        Fluttertoast.showToast(
-                            msg: "Please Complete Info and the picture");
+                    if (isValidContactInfo()) {
+                      if (widget.isUpdating) {
+                        updateContact();
                       } else {
-                        context.read<ContactBloc>().add(ContactAdd(
-                            contact: Contact(
-                                id: UniqueKey().toString(),
-                                address: addressController.text,
-                                contactNumber: numberController.text,
-                                email: emailController.text,
-                                imagePath: imagePath.toString(),
-                                name: widget.name)));
-                        Navigator.pop(context);
-                      }
-                    } else {
-                      if (addressController.text == "" ||
-                          numberController.text == "" ||
-                          emailController.text == "") {
-                        Fluttertoast.showToast(msg: "Complete Fields");
-                      } else {
-                        context.read<ContactBloc>().add(ContactUpdate(
-                            contact: Contact(
-                                id: widget.contact!.id,
-                                address: addressController.text,
-                                contactNumber: numberController.text,
-                                email: emailController.text,
-                                imagePath: imagePath.toString(),
-                                name: widget.name)));
-                        Navigator.pop(context);
+                        addNewContact();
                       }
                     }
                   },
